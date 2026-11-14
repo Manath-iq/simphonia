@@ -1,0 +1,16 @@
+{
+  "name": "simphonia",
+  "private": true,
+  "version": "2.0.0",
+  "scripts": {
+    "build": "esbuild src/main.jsx --bundle --minify --define:process.env.NODE_ENV=\\\"production\\\" --outfile=assets/app.js"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "embla-carousel-react": "^8.6.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}
