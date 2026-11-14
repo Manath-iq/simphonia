@@ -5,86 +5,95 @@ import useEmblaCarousel from "embla-carousel-react";
 const phone = "tel:+79179186505";
 const telegram = "https://t.me/symphony_nk";
 const picture = (name) => "./assets/" + name + ".webp";
-const sides = [
-  {
-    tab: "Бар",
-    title: ["Ещё по", "одному?"],
-    img: "evening",
-    alt: "Гости встречаются бокалами над столом",
-    desc: "Коктейли, долгие разговоры и ещё один тост на пятом этаже «Олимпа».",
-    color: "bar",
-  },
-  {
-    tab: "Кухня",
-    title: ["Что будем", "делить?"],
-    img: "bruschetta",
-    alt: "Брускетты на чёрной тарелке",
-    desc: "Возьмите закуски на общий стол. За разговорами последняя брускетта обычно достаётся самому быстрому.",
-    color: "food",
-  },
-  {
-    tab: "Зал",
-    title: ["Увидимся", "на пятом."],
-    img: "room",
-    alt: "Зал гастробара с тёплой подсветкой и мягкими креслами",
-    desc: "Мягкие кресла у бара, тёплый свет и стол для своих. Поднимайтесь на пятый этаж.",
-    color: "room",
-  },
-];
-function Header() {
+function Hero() {
   return (
-    <header>
-      <a href="#top" className="wordmark">
-        Симфония<span>✳</span>
-      </a>
-      <nav aria-label="Основная навигация">
-        <a href="#table">Кухня</a>
-        <a href="#film">Атмосфера</a>
-        <a href="#nights">Афиша</a>
-        <a href="#visit">Как найти</a>
-      </nav>
-      <a className="reserve" href={phone}>
-        Бронь столика ↗
-      </a>
-    </header>
+    <section className="hero">
+      <img
+        className="hero-image"
+        src={picture("nocturne")}
+        alt=""
+        fetchPriority="high"
+      />
+      <header>
+        <a className="brand" href="#top">
+          Симфония
+        </a>
+        <nav aria-label="Разделы сайта">
+          <a href="#bar">Бар</a>
+          <a href="#table">Кухня</a>
+          <a href="#film">Атмосфера</a>
+          <a href="#visit">Контакты</a>
+        </nav>
+        <a className="reserve" href={phone}>
+          Бронь столика ↗
+        </a>
+      </header>
+      <div className="hero-title">
+        <small>Гастробар в Нижнекамске</small>
+        <h1>Симфония</h1>
+      </div>
+      <div className="hero-foot">
+        <span>ТЦ «Олимп», 5 этаж</span>
+        <a href="#bar">К коктейлям ↓</a>
+      </div>
+    </section>
   );
 }
-function Sleeve() {
-  const [index, select] = useState(0);
-  const side = sides[index];
+const drinks = [
+  {
+    image: "amber",
+    label: "Цитрус",
+    caption: "Янтарь и цедра",
+    alt: "Бокал с цитрусовой цедрой в луче янтарного света",
+  },
+  {
+    image: "espresso",
+    label: "Кофе",
+    caption: "Эспрессо и крема",
+    alt: "Кофейный коктейль на тонкой ножке под медным светом",
+  },
+];
+function Bar() {
+  const [selected, setSelected] = useState(0);
+  const drink = drinks[selected];
   return (
-    <section aria-label="Стороны Симфонии" className={"sleeve " + side.color}>
-      <div className="cover">
-        <div className="copy">
-          <div className="location">Гастробар &nbsp; / &nbsp; Нижнекамск</div>
-          <h1 key={side.tab}>
-            {side.title[0]}
-            <br />
-            {side.title[1]}
-          </h1>
-          <p>{side.desc}</p>
-        </div>
-        <figure className="record" key={side.img}>
-          <img src={picture(side.img)} alt={side.alt} />
-        </figure>
-      </div>
-      <div className="controls">
-        <div className="selectors" aria-label="Выбрать сторону вечера">
-          {sides.map((s, i) => (
+    <section
+      id="bar"
+      className={"bar tone-" + drink.image}
+      aria-labelledby="bar-title"
+    >
+      <div className="bar-copy">
+        <small>Барная коллекция · Эскизы подачи</small>
+        <h2 id="bar-title">
+          Свет <em>и тень</em>
+        </h2>
+        <p>Два настроения одного вечера. Выберите свой бокал.</p>
+        <div className="switch" aria-label="Выбор бокала">
+          {drinks.map((d, i) => (
             <button
-              key={s.tab}
-              aria-pressed={i === index}
-              onClick={() => select(i)}
+              key={d.image}
+              aria-pressed={i === selected}
+              onClick={() => setSelected(i)}
             >
-              <span aria-hidden="true">{String.fromCharCode(65 + i)}</span>
-              {s.tab}
+              {d.label}
             </button>
           ))}
         </div>
-        <a className="down" href="#table">
-          К столу ↓
-        </a>
       </div>
+      <figure className="lightstage">
+        <div className="glass">
+          {drinks.map((d, i) => (
+            <img
+              key={d.image}
+              className={selected === i ? "lit" : ""}
+              loading="lazy"
+              src={picture(d.image)}
+              alt={selected === i ? d.alt : ""}
+            />
+          ))}
+        </div>
+        <figcaption aria-live="polite">{drink.caption}</figcaption>
+      </figure>
     </section>
   );
 }
@@ -166,12 +175,9 @@ function Film() {
   return (
     <section className="film" id="film">
       <div className="filmtext">
-        <small>Из дневника гастробара</small>
-        <h2>Мы ненадолго.</h2>
-        <p>
-          Так обычно начинается вечер. Загляните на десять секунд за столик
-          «Симфонии».
-        </p>
+        <small>Зал «Симфонии»</small>
+        <h2>За столиком</h2>
+        <p>Короткое видео из «Симфонии».</p>
         <button className="play" onClick={open}>
           <span>▶</span> Смотреть видео <small>0:10</small>
         </button>
@@ -179,7 +185,6 @@ function Film() {
       </div>
       <div className="frames" aria-hidden="true">
         <img src={picture("room")} loading="lazy" alt="" />
-        <img src={picture("film")} loading="lazy" alt="" />
       </div>
       <dialog
         ref={dialog}
@@ -265,9 +270,9 @@ function Visit() {
 function App() {
   return (
     <div id="top">
-      <Header />
       <main>
-        <Sleeve />
+        <Hero />
+        <Bar />
         <Kitchen />
         <Film />
         <Events />
