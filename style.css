@@ -224,76 +224,163 @@ header nav {
 .filmtext > a {
   margin-top: 16px;
 }
+
+@font-face {
+  font-family: PosterScript;
+  src: url("./poster-script.ttf") format("truetype");
+  font-display: swap;
+}
 .bar {
+  --ink: #ffddb0;
   position: relative;
   isolation: isolate;
-  text-align: center;
   overflow: hidden;
-  background: #0c0605;
-  color: #efcda8;
-  padding: 38px var(--pad) 26px;
+  height: clamp(840px, 108svh, 1160px);
+  background: #19090a;
+  color: var(--ink);
 }
-.bar-copy h2 {
+.bar-copy {
   position: relative;
   z-index: 1;
+  height: 100%;
+  pointer-events: none;
+}
+.bar-copy small {
+  position: absolute;
+  left: var(--pad);
+  top: var(--pad);
   font:
-    400 clamp(62px, 7vw, 110px)/0.85 Georgia,
+    italic clamp(17px, 1.55vw, 25px) Georgia,
     serif;
+  letter-spacing: 0;
   text-transform: none;
-  letter-spacing: -0.08em;
-  margin: 14px auto 0;
+}
+.bar-copy h2 {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  margin: 0;
+  text-align: center;
+  text-transform: none;
+  font:
+    400 clamp(112px, 10vw, 192px)/0.88 Georgia,
+    serif;
+  letter-spacing: -0.075em;
+  color: var(--ink);
+  text-shadow: 0 2px 20px #2e0807;
+}
+.bar-copy h2 span,
+.bar-copy h2 em {
+  display: block;
+}
+.bar-copy h2 span {
+  padding-right: 0.55em;
 }
 .bar-copy h2 em {
-  font-weight: 400;
+  font:
+    400 1.2em/0.78 PosterScript,
+    "Times New Roman",
+    serif;
+  letter-spacing: 0;
+  margin: 0.02em -0.25em 0 0.4em;
 }
-.lightstage {
-  width: min(100%, 500px);
-  margin: 0 auto;
+.bar-copy h2 i {
+  position: absolute;
+  right: -0.4em;
+  top: 43%;
+  border: 1px solid #d4aa7e;
+  border-radius: 50%;
+  font:
+    italic 0.19em/1 Georgia,
+    serif;
+  padding: 0.02em 0.47em 0.12em;
+  letter-spacing: 0;
+  transform: rotate(-9deg);
 }
+.lightstage,
 .glass {
-  position: relative;
-  height: clamp(330px, 33vw, 490px);
+  position: absolute;
+  inset: 0;
 }
 .glass img {
   position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: min(100%, 800px);
+  height: 72%;
   object-fit: cover;
-  object-position: center 59%;
+  object-position: 50% 47%;
   opacity: 0;
-  transition: opacity 0.65s;
+  transition: opacity 0.7s ease;
   mask-image:
-    linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent),
-    linear-gradient(transparent, #000 9%, #000 87%, transparent);
+    linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent),
+    linear-gradient(0deg, transparent, #000 10%, #000 70%, transparent);
   mask-composite: intersect;
 }
 .glass img.lit {
   opacity: 1;
 }
 .lightstage figcaption {
+  position: absolute;
+  bottom: var(--pad);
+  left: var(--pad);
   font:
-    italic 18px Georgia,
+    italic clamp(20px, 2.3vw, 37px)/1.1 Georgia,
     serif;
+  letter-spacing: -0.045em;
 }
 .switch {
   position: absolute;
-  bottom: 32px;
+  bottom: calc(var(--pad) - 5px);
   right: var(--pad);
-  gap: 16px;
+  gap: 18px;
+  pointer-events: auto;
 }
 .switch button {
+  min-height: 44px;
+  padding: 8px 2px;
   background: none;
   border: 0;
   border-bottom: 1px solid transparent;
-  padding: 8px 0;
-  font-size: 14px;
-  color: #c3ab97;
+  color: #c6a798;
+  font-size: 16px;
 }
 .switch button[aria-pressed="true"] {
-  color: #ffe2b8;
   border-color: currentColor;
+  color: var(--ink);
+}
+@media (max-width: 680px) {
+  .bar {
+    height: clamp(695px, 96svh, 920px);
+  }
+  .bar-copy small {
+    top: 22px;
+  }
+  .bar-copy h2 {
+    top: 11%;
+    font-size: clamp(88px, 19vw, 123px);
+  }
+  .glass img {
+    width: 128%;
+    height: 71%;
+    bottom: 7%;
+    object-position: center 62%;
+  }
+  .lightstage figcaption {
+    bottom: 88px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+  }
+  .switch {
+    bottom: 22px;
+    left: 0;
+    right: 0;
+    justify-content: center;
+  }
 }
 .table {
   background: var(--red);
@@ -446,22 +533,6 @@ dialog video {
   .rail figure {
     flex-basis: calc((100% - 12px) / 2);
   }
-  .switch {
-    position: static;
-    justify-content: center;
-    margin: 14px auto 0;
-  }
-  .bar-copy {
-    display: contents;
-  }
-  .bar {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  }
-  .switch {
-    order: 1;
-  }
   .filmtext h2 {
     font-size: 52px;
   }
@@ -516,12 +587,7 @@ dialog video {
   .filmtext p {
     margin: 20px 0 15px;
   }
-  .bar {
-    padding-block: 33px;
-  }
-  .glass {
-    height: 365px;
-  }
+
   .sectionhead {
     flex-wrap: wrap;
     align-items: center;
@@ -595,12 +661,4 @@ header nav,
 .hero-foot,
 .mobile-nav {
   text-shadow: 0 1px 5px #090707;
-}
-@media (min-width: 901px) {
-  .lightstage {
-    width: min(88%, 430px);
-  }
-  .glass {
-    height: clamp(390px, 35vw, 510px);
-  }
 }

@@ -75,10 +75,10 @@ function Bar() {
       <div className="bar-copy">
         <small>Барный этюд</small>
         <h2 id="bar-title">
-          Свет <em>и тень</em>
+          <span>Свет</span> <i>и</i> <em>тень</em>
         </h2>
 
-        <div className="switch" aria-label="Выбор бокала">
+        <div className="switch" role="group" aria-label="Выбор бокала">
           {drinks.map((d, i) => (
             <button
               key={d.image}
