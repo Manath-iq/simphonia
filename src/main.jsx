@@ -8,46 +8,56 @@ const picture = (name) => "./assets/" + name + ".webp";
 function Hero() {
   return (
     <section className="hero">
-      <img
-        className="hero-image"
-        src={picture("nocturne")}
-        alt=""
-        fetchPriority="high"
-      />
+      <picture>
+        <source
+          media="(max-width:600px)"
+          srcSet={picture("editorial-mobile")}
+        />
+        <img
+          className="hero-image"
+          src={picture("editorial-evening")}
+          alt=""
+          fetchPriority="high"
+        />
+      </picture>
       <header>
-        <a className="brand" href="#top">
-          Симфония
-        </a>
+        <span className="city">Нижнекамск</span>
+        <div className="mast">
+          <h1>SYMPHONY</h1>
+          <span>Гастробар</span>
+        </div>
         <nav aria-label="Разделы сайта">
-          <a href="#bar">Бар</a>
-          <a href="#table">Кухня</a>
           <a href="#film">Атмосфера</a>
-          <a href="#visit">Контакты</a>
+          <a href="#bar">Бар</a>
+          <a href="#table">Меню</a>
+          <a href="#nights">Афиша</a>
         </nav>
         <a className="reserve" href={phone}>
           Бронь столика ↗
         </a>
       </header>
-      <div className="hero-title">
-        <small>Гастробар в Нижнекамске</small>
-        <h1>Симфония</h1>
-      </div>
+      <nav className="mobile-nav" aria-label="Разделы на телефоне">
+        <a href="#film">Зал</a>
+        <a href="#bar">Бар</a>
+        <a href="#table">Меню</a>
+        <a href="#nights">Афиша</a>
+      </nav>
       <div className="hero-foot">
         <span>ТЦ «Олимп», 5 этаж</span>
-        <a href="#bar">К коктейлям ↓</a>
+        <a href="#film">Внутри «Симфонии» ↓</a>
       </div>
     </section>
   );
 }
 const drinks = [
   {
-    image: "amber",
-    label: "Цитрус",
-    caption: "Янтарь и цедра",
-    alt: "Бокал с цитрусовой цедрой в луче янтарного света",
+    image: "editorial-ruby",
+    label: "Рубиновый",
+    caption: "Рубин в янтарном свете",
+    alt: "Красный коктейль в рифлёном стакане под янтарным светом",
   },
   {
-    image: "espresso",
+    image: "editorial-crema",
     label: "Кофе",
     caption: "Эспрессо и крема",
     alt: "Кофейный коктейль на тонкой ножке под медным светом",
@@ -63,11 +73,11 @@ function Bar() {
       aria-labelledby="bar-title"
     >
       <div className="bar-copy">
-        <small>Барная коллекция · Эскизы подачи</small>
+        <small>Барный этюд</small>
         <h2 id="bar-title">
           Свет <em>и тень</em>
         </h2>
-        <p>Два настроения одного вечера. Выберите свой бокал.</p>
+
         <div className="switch" aria-label="Выбор бокала">
           {drinks.map((d, i) => (
             <button
@@ -98,14 +108,10 @@ function Bar() {
   );
 }
 const dishes = [
-  ["bruschetta", "Брускетты к столу", "Хрустящий хлеб, зелень и яркая подача."],
-  ["greens", "Салат с креветками", "Зелень и креветки на тёмной керамике."],
-  ["avocado", "Ещё одну закуску", "Три маленьких тоста для большого стола."],
-  [
-    "coffee",
-    "Кофе после обеда",
-    "Последний глоток, прежде чем вернуться к делам.",
-  ],
+  ["editorial-bruschetta", "Брускетты"],
+  ["editorial-greens", "С креветками"],
+  ["editorial-film", "Напитки"],
+  ["editorial-coffee", "Кофе"],
 ];
 function Kitchen() {
   const [ref, api] = useEmblaCarousel({
@@ -126,9 +132,11 @@ function Kitchen() {
     <section id="table" className="table">
       <div className="sectionhead">
         <div>
-          <small>Из кухни «Симфонии»</small>
-          <h2>На общий стол</h2>
+          <h2>Меню</h2>
         </div>
+        <p className="menu-note">
+          Закуски на общий стол, бокал к ужину и кофе после.
+        </p>
         <div className="arrows">
           <button
             aria-label="Предыдущее блюдо"
@@ -148,13 +156,12 @@ function Kitchen() {
       </div>
       <div className="viewport" ref={ref}>
         <div className="rail">
-          {dishes.map(([img, title, desc]) => (
+          {dishes.map(([img, title]) => (
             <figure key={img}>
-              <img loading="lazy" src={picture(img)} alt={title} />
-              <figcaption>
-                <h3>{title}</h3>
-                <p>{desc}</p>
-              </figcaption>
+              <figcaption>{title}</figcaption>
+              <div className="menu-img">
+                <img loading="lazy" src={picture(img)} alt={title} />
+              </div>
             </figure>
           ))}
         </div>
@@ -163,6 +170,18 @@ function Kitchen() {
   );
 }
 function Film() {
+  const frame = useRef(null);
+  useEffect(() => {
+    if (!window.IntersectionObserver) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("reveal");
+        observer.disconnect();
+      }
+    });
+    observer.observe(frame.current);
+    return () => observer.disconnect();
+  }, []);
   const dialog = useRef(null),
     video = useRef(null);
   function open() {
@@ -175,16 +194,26 @@ function Film() {
   return (
     <section className="film" id="film">
       <div className="filmtext">
-        <small>Зал «Симфонии»</small>
-        <h2>За столиком</h2>
-        <p>Короткое видео из «Симфонии».</p>
+        <small>Атмосфера</small>
+        <h2>
+          На пятом <br />
+          этаже
+        </h2>
+        <p>
+          Кресла у стойки, янтарный свет и мягкие диваны. Здесь ужин легко
+          затягивается до ночи.
+        </p>
         <button className="play" onClick={open}>
           <span>▶</span> Смотреть видео <small>0:10</small>
         </button>
-        <a href={telegram}>Афиша и новые вечера в Telegram ↗</a>
+        <a href={telegram}>Гастробар в Telegram ↗</a>
       </div>
-      <div className="frames" aria-hidden="true">
-        <img src={picture("room")} loading="lazy" alt="" />
+      <div ref={frame} className="frames">
+        <img
+          src={picture("editorial-room")}
+          loading="lazy"
+          alt="Мягкие кресла, светящаяся каменная панель и стойка бара «Симфония»"
+        />
       </div>
       <dialog
         ref={dialog}
@@ -199,7 +228,7 @@ function Film() {
           controls
           playsInline
           preload="none"
-          poster={picture("film")}
+          poster={picture("editorial-film")}
           src="./assets/at-table.mp4"
         />
       </dialog>
@@ -210,9 +239,9 @@ function Events() {
   return (
     <section id="nights" className="events">
       <img
-        src={picture("night")}
+        src={picture("editorial-night")}
         loading="lazy"
-        alt="Афиша вечеринки Halloween Night со свечами в зале гастробара"
+        alt="Гости у свечей во время Halloween Night"
       />
       <div>
         <small>Из архива · 31 октября</small>
@@ -272,9 +301,9 @@ function App() {
     <div id="top">
       <main>
         <Hero />
+        <Film />
         <Bar />
         <Kitchen />
-        <Film />
         <Events />
       </main>
       <Visit />

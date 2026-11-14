@@ -7,6 +7,7 @@ const { metafile } = await build({
   outdir: "assets",
   entryNames: "[name]-[hash]",
   bundle: true,
+  external: ["./oswald-latin.woff2", "./oswald-cyrillic.woff2"],
   minify: true,
   metafile: true,
   define: { "process.env.NODE_ENV": '"production"' },
