@@ -5,6 +5,34 @@ import useEmblaCarousel from "embla-carousel-react";
 const phone = "tel:+79179186505";
 const telegram = "https://t.me/symphony_nk";
 const picture = (name) => "./assets/" + name + ".webp";
+const iconPaths = {
+  outward: "M4 12 12 4 M4 4h8v8",
+  down: "M8 2v12 M3 9l5 5 5-5",
+  left: "M14 8H2 M7 3 2 8l5 5",
+  right: "M2 8h12 M9 3l5 5-5 5",
+  play: "M4 2.5 13 8 4 13.5Z",
+  close: "M3 3l10 10 M13 3 3 13",
+};
+
+function Icon({ name }) {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      width="1em"
+      height="1em"
+      className="ui-icon"
+      viewBox="0 0 16 16"
+      fill={name === "play" ? "currentColor" : "none"}
+      stroke="currentColor"
+      strokeWidth="1.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d={iconPaths[name]} />
+    </svg>
+  );
+}
 function Hero() {
   return (
     <section className="hero">
@@ -33,7 +61,7 @@ function Hero() {
           <a href="#nights">Афиша</a>
         </nav>
         <a className="reserve" href={phone}>
-          Бронь столика ↗
+          Бронь столика <Icon name="outward" />
         </a>
       </header>
       <nav className="mobile-nav" aria-label="Разделы на телефоне">
@@ -44,7 +72,9 @@ function Hero() {
       </nav>
       <div className="hero-foot">
         <span>ТЦ «Олимп», 5 этаж</span>
-        <a href="#film">Внутри «Симфонии» ↓</a>
+        <a href="#film">
+          Внутри «Симфонии» <Icon name="down" />
+        </a>
       </div>
     </section>
   );
@@ -143,14 +173,14 @@ function Kitchen() {
             disabled={!arrows[0]}
             onClick={() => api?.scrollPrev()}
           >
-            ←
+            <Icon name="left" />
           </button>
           <button
             aria-label="Следующее блюдо"
             disabled={!arrows[1]}
             onClick={() => api?.scrollNext()}
           >
-            →
+            <Icon name="right" />
           </button>
         </div>
       </div>
@@ -204,9 +234,11 @@ function Film() {
           затягивается до ночи.
         </p>
         <button className="play" onClick={open}>
-          <span>▶</span> Смотреть видео <small>0:10</small>
+          <Icon name="play" /> Смотреть видео <small>0:10</small>
         </button>
-        <a href={telegram}>Гастробар в Telegram ↗</a>
+        <a href={telegram}>
+          Гастробар в Telegram <Icon name="outward" />
+        </a>
       </div>
       <div ref={frame} className="frames">
         <img
@@ -221,7 +253,7 @@ function Film() {
         aria-label="Видео за столиком Симфонии"
       >
         <button autoFocus onClick={close} aria-label="Закрыть видео">
-          Закрыть ×
+          Закрыть <Icon name="close" />
         </button>
         <video
           ref={video}
@@ -250,7 +282,9 @@ function Events() {
           Свечи, бордо и готический дресс-код. На одну ночь бар собрал особую
           коктейльную карту, а за музыку отвечал DJ.
         </p>
-        <a href={telegram + "/13"}>Открыть афишу вечера ↗</a>
+        <a href={telegram + "/13"}>
+          Открыть афишу вечера <Icon name="outward" />
+        </a>
       </div>
     </section>
   );
@@ -266,7 +300,7 @@ function Visit() {
           на пятом.
         </h2>
         <a className="number" href={phone}>
-          +7 917 918-65-05 ↗
+          +7 917 918-65-05 <Icon name="outward" />
         </a>
       </div>
       <div className="info">
@@ -277,7 +311,7 @@ function Visit() {
           ТЦ «Олимп», 5 этаж
         </p>
         <a href="https://yandex.ru/maps/?text=Нижнекамск%20Баки%20Урманче%2015%20Олимп">
-          Открыть карту ↗
+          Открыть карту <Icon name="outward" />
         </a>
         <h3>Когда приходить</h3>
         <p>

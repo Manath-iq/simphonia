@@ -662,3 +662,8 @@ header nav,
 .mobile-nav {
   text-shadow: 0 1px 5px #090707;
 }
+
+.ui-icon {
+  display: inline-block;
+  vertical-align: -0.12em;
+}
