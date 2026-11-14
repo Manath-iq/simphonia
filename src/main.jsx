@@ -269,21 +269,28 @@ function Film() {
 }
 function Events() {
   return (
-    <section id="nights" className="events">
-      <img
-        src={picture("editorial-night")}
-        loading="lazy"
-        alt="Гости у свечей во время Halloween Night"
-      />
-      <div>
-        <small>Из архива · 31 октября</small>
-        <h2>Halloween Night</h2>
+    <section id="nights" className="events" aria-labelledby="night-title">
+      <div className="night-poster">
+        <img
+          src={picture("editorial-night")}
+          loading="lazy"
+          alt="Две гостьи у освещённой свечами стойки бара"
+        />
+        <div className="night-meta">
+          <small>Архив вечеров</small>
+          <time dateTime="2026-10-31">31 октября</time>
+        </div>
+        <h2 id="night-title">
+          <span>Halloween</span> <em>Night</em>
+        </h2>
+      </div>
+      <div className="night-notes">
         <p>
-          Свечи, бордо и готический дресс-код. На одну ночь бар собрал особую
-          коктейльную карту, а за музыку отвечал DJ.
+          Свечи, бордо и готический дресс-код. За стойкой смешивали коктейли
+          вечера, за музыку отвечал DJ.
         </p>
         <a href={telegram + "/13"}>
-          Открыть афишу вечера <Icon name="outward" />
+          Афиша в Telegram <Icon name="outward" />
         </a>
       </div>
     </section>
